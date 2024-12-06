@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import {FaEye,FaRegEye} from "react-icons/fa"
 import { Link } from 'react-router-dom';
-import OAuth from '../componets/OAuth';
+import OAuth from '../components/OAuth';
 import {toast} from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import {signInWithEmailAndPassword, getAuth} from 'firebase/auth'

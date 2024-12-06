@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import {FaEye,FaRegEye} from "react-icons/fa"
 import { Link } from 'react-router-dom';
-import OAuth from '../componets/OAuth.jsx';
+import OAuth from '../components/OAuth.jsx';
 import { useNavigate } from 'react-router-dom';
 import { doc,  serverTimestamp, setDoc } from "firebase/firestore"; // Import Firestore functions
 import {db} from '../firebase';
