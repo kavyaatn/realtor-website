@@ -5,7 +5,8 @@ import { useNavigate } from 'react-router';
 import {toast} from 'react-toastify';
 import {db} from "../firebase"
 import { doc,updateDoc } from "firebase/firestore"; // Import Firestore functions
-
+import { FaHome } from "react-icons/fa";
+import { Link } from 'react-router-dom';
 export default function Profile() {
   const auth =getAuth();
   const [formData,setFormData] = useState({
@@ -60,6 +61,13 @@ export default function Profile() {
             <p onClick={onLogout} className='text-blue-600 hover:text-blue-800 transition duration-200 ease-in-out cursor-pointer'> Sign Out</p>
           </div>
         </form>
+        <button type='submit' className='w-full bg-blue-600 text-white uppercase px-7 py-3 text-small font-medium rounded shadow-md hover:bg-blue-750 transition duration-150 ease-in-out hover:shadow-lg active:bg-blue-900 '>
+          <Link to ="/create-listing" className='flex justify-center items-center'>
+          <FaHome className='mr-2 text-2xl bg-blue-100 rounded-full p-1 border-2'/>
+        Sell or rent your Home
+          </Link>
+          
+        </button>
       </div>
       </section>      
     </div>
