@@ -26,7 +26,10 @@ function App() {
           </Route>
           <Route path="/sign-in" element={<SignIn />} />
           <Route path="/sign-up" element={<SignUp />} />          
-          <Route path="/create-listing" element={<CreateListing />} />
+          <Route path="/create-listing" element={<PrivateRoute />}>
+            {/* Nested route */}
+            <Route index element={<CreateListing />} />
+          </Route>
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/offers" element={<Offers />} />
 
