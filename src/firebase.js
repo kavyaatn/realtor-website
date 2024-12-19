@@ -6,7 +6,7 @@ import { getFirestore } from "firebase/firestore";
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-  apiKey: "AIzaSyCkHupI4kjcqzZK0UITp5pjaVdBvdhV4l0",
+  apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
   authDomain: "mango-c3441.firebaseapp.com",
   projectId: "mango-c3441",
   storageBucket: "mango-c3441.appspot.com",
