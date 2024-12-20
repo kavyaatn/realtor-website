@@ -4,12 +4,21 @@ import {toast} from 'react-toastify'
 import Spinner from '../components/Spinner';
 import { MapContainer, Marker, Popup, TileLayer } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
+import { serverTimestamp } from 'firebase/firestore';
+import { getAuth } from 'firebase/auth';
+import {getStorage,ref,uploadBytesResumable,getDownloadURL} from "firebase/storage";
+import { db } from "../firebase";
+import { v4 as uuidv4 } from "uuid";
+import { useNavigate } from "react-router-dom";
+import { addDoc, collection } from "firebase/firestore";
+
 
 export default function CreateListing() {
   const [geolocationEnable, setGeolocationEnabled] = useState(true);
   const [loading,setLoading] =useState(false);
   const [counter, setCounter] = useState(0);
-
+  const auth =getAuth();
+  const navigate = useNavigate();
   const [formData,setFormData] =useState({
     type:"rent",
     name:" ",
@@ -68,11 +77,11 @@ export default function CreateListing() {
     let f = await fetch(`https://geocode.maps.co/search?q=${address}`);
     const data = await f.json();
     console.log(data);
-    if (data.length != 0) {
+    if (data.length !== 0) {
       console.log(data);
       geoLocation.lat = data[0].lat;
       geoLocation.long = data[0].lon;
-  } else if (Object.keys(response).length == 0 && counter == 0) {
+  } else if (Object.keys(data).length === 0 && counter === 0) {
       toast.error("Address invalid, manually enter the Co-ordinates");
       setCounter(1);
       setLoading(false);
@@ -82,9 +91,44 @@ export default function CreateListing() {
     geoLocation.lat = latitude;
     geoLocation.long = longitude;
   }
-  async function storeImage(){
-
+  async function storeImage(image) {
+    return new Promise((resolve, reject) => {
+      const storage = getStorage();
+      const filename = `${auth.currentUser.uid}-${image.name}-${uuidv4()}`;
+      const storageRef = ref(storage, filename);
+      const uploadTask = uploadBytesResumable(storageRef, image);
+      uploadTask.on(
+        "state_changed",
+        (snapshot) => {
+          // Observe state change events such as progress, pause, and resume
+          // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
+          const progress =
+            (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+          console.log("Upload is " + progress + "% done");
+          switch (snapshot.state) {
+            case "paused":
+              console.log("Upload is paused");
+              break;
+            case "running":
+              console.log("Upload is running");
+              break;
+          }
+        },
+        (error) => {
+          // Handle unsuccessful uploads
+          reject(error);
+        },
+        () => {
+          // Handle successful uploads on complete
+          // For instance, get the download URL: https://firebasestorage.googleapis.com/...
+          getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+            resolve(downloadURL);
+          });
+        }
+      );
+    });
   }
+  
   const imgUrls = await Promise.all(
     [...images].map((image) => storeImage(image))
   ).catch((error) => {
@@ -93,7 +137,22 @@ export default function CreateListing() {
     return;
   });
 
-  }
+  const formDataCopy = {
+    ...formData,
+    imgUrls,
+    geoLocation,
+    timestamp: serverTimestamp(),
+    userRef: auth.currentUser.uid,
+  };
+  delete formDataCopy.images;
+  !formDataCopy.offer && delete formDataCopy.discountedPrice;
+  delete formDataCopy.latitude;
+  delete formDataCopy.longitude;
+  const docRef = await addDoc(collection(db, "listings"), formDataCopy);
+  setLoading(false);
+  toast.success("Listing created");
+  navigate(`/category/${formDataCopy.type}/${docRef.id}`);
+}
   
   if (loading){
     return <Spinner/>
