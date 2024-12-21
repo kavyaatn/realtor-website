@@ -60,7 +60,7 @@ export default function CreateListing() {
   async function onSubmit(e){
     e.preventDefault();
     setLoading(true);
-    if(discountedPrice >= regularPrice){
+    if (+discountedPrice >= +regularPrice) {
       setLoading(false);
       toast.error("discounted price needs to be less than regular price")
       return;
@@ -244,7 +244,7 @@ export default function CreateListing() {
             <div className=''>
               <p className='text-lg font-semibold'>Discounted price</p>
               <div className='flex w-full justify-cente items-center space-x-6'>
-                <input type='number' id='distountedPrice' value={discountedPrice} onChange={onChange} min="50" max="400000000" required={offer} className='w-full px-4 py-2 text-xl text-gray-700 bg-white border-gray-300 rounded transition ease-in-out duration-150 focus:text-gray-700 focus:bg-white focus:border-slate-600 text-center' />
+                <input type='number' id='discountedPrice' value={discountedPrice} onChange={onChange} min="50" max="400000000" required={offer} className='w-full px-4 py-2 text-xl text-gray-700 bg-white border-gray-300 rounded transition ease-in-out duration-150 focus:text-gray-700 focus:bg-white focus:border-slate-600 text-center' />
                 { type === "rent" &&(
                 <div className=''>
                   <p className='text-md w-full whitespace-nowrap'>$/Month</p>

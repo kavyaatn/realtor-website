@@ -9,10 +9,10 @@ import ListingItem from '../components/ListingItem';
 
 export default function Profile() {
   const auth = getAuth();
-  const [listing, setListing] = useState([]); // Initialize with an empty array
+  const [listing, setListing] = useState([]); 
   const [loading, setLoading] = useState(true);
   const [formData, setFormData] = useState({
-    name: auth.currentUser.displayName || '', // Ensure a default value
+    name: auth.currentUser.displayName || '', 
     email: auth.currentUser.email || '',
   });
   const [changeDetails, setChangeDetails] = useState(false);
@@ -27,7 +27,7 @@ export default function Profile() {
 
   async function onSubmit() {
     try {
-      const { name } = formData; // Get name from formData
+      const { name } = formData; 
       if (auth.currentUser.displayName !== name) {
         await updateProfile(auth.currentUser, {
           displayName: name,
@@ -53,7 +53,7 @@ export default function Profile() {
   useEffect(() => {
     async function fetchingUserListing() {
       const listingRef = collection(db, "listings");
-      const q = query(listingRef, where("useRef", "==", auth.currentUser.uid), orderBy("timestamp", "desc"));
+      const q = query(listingRef, where("userRef", "==", auth.currentUser.uid), orderBy("timestamp", "desc"));
       const querySnap = await getDocs(q);
       let listings = [];
       querySnap.forEach((doc) => {
@@ -62,7 +62,7 @@ export default function Profile() {
           data: doc.data(),
         });
       });
-      setListing(listings); // Set listings state
+      setListing(listings); 
       setLoading(false);
     }
 
@@ -113,11 +113,11 @@ export default function Profile() {
           </button>
         </div>
       </section>
-      <div>
+      <div className='max-w-6xl px-3 mt-6 mx-auto'>
         {!loading && listing.length > 0 && (
           <>
-            <h2 className='text-2xl text-center font-semibold'> Listings </h2>
-            <ul>
+            <h2 className='text-2xl text-center font-semibold mb-6'> My Listings </h2>
+            <ul className='sm:grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl-grid-cols-5 mt-6 mb-6'>
               {listing.map((item) => (
                 <ListingItem
                   key={item.id}
