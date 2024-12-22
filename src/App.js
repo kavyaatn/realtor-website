@@ -7,7 +7,7 @@ import SignUp from './pages/SignUp';
 import ForgotPassword from './pages/ForgotPassword';
 import Header from './components/Header';
 import Offers from './pages/Offers';
-
+import EditListing from './pages/EditListing';
 import PrivateRoute from './components/PrivateRoute';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -29,6 +29,10 @@ function App() {
           <Route path="/create-listing" element={<PrivateRoute />}>
             {/* Nested route */}
             <Route index element={<CreateListing />} />
+          </Route>
+          <Route path="/edit-listing" element={<PrivateRoute />}>
+            {/* Nested route */}
+            <Route path="/edit-listing/:listingId" element={<EditListing />} />
           </Route>
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/offers" element={<Offers />} />
