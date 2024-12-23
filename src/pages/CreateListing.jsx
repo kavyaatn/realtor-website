@@ -247,7 +247,7 @@ export default function CreateListing() {
                 <input type='number' id='discountedPrice' value={discountedPrice} onChange={onChange} min="50" max="400000000" required={offer} className='w-full px-4 py-2 text-xl text-gray-700 bg-white border-gray-300 rounded transition ease-in-out duration-150 focus:text-gray-700 focus:bg-white focus:border-slate-600 text-center' />
                 { type === "rent" &&(
                 <div className=''>
-                  <p className='text-md w-full whitespace-nowrap'>$/Month</p>
+                  <p className='text-md w-full whitespace-nowrap'> $/Month </p>
                 </div>
               )}
               </div>
