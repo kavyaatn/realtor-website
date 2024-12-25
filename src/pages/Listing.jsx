@@ -5,6 +5,7 @@ import { doc, getDoc } from 'firebase/firestore';
 import Spinner from '../components/Spinner';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { IoShareSocialSharp } from "react-icons/io5";
+import { MapContainer, Marker, Popup, TileLayer } from 'react-leaflet';
 import { FaBed, FaBath,FaParking, FaChair} from "react-icons/fa";
 import { FaLocationDot } from "react-icons/fa6";
 import { EffectFade, Autoplay, Navigation, Pagination } from 'swiper/modules';
@@ -14,6 +15,9 @@ import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import { getAuth } from 'firebase/auth';
 import Contact from '../components/Contact';
+import 'leaflet/dist/leaflet.css';
+import markerIconPng from "leaflet/dist/images/marker-icon.png"
+import {Icon} from 'leaflet'
 
 export default function Listing() {
   const { listingId } = useParams();
@@ -113,7 +117,20 @@ export default function Listing() {
             )}
             {contacting && <Contact userRef={listing.userRef} listing={listing}/>}
         </div>
-        <div className=' bg-blue-200 w-full h-[200px] lg-[400px] z-10 overflow-hidden'></div>
+        <div className='w-full h-[200px] md:h-[600px] z-10 overflow-hidden mt-6 md:mt-0 md:ml-2'>
+        <MapContainer center={[listing.geoLocation.lat,listing.geoLocation.long]} zoom={13} scrollWheelZoom={false} style={{width: "100%", height: "100%"}}>
+    <TileLayer
+      attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+      url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+    />
+      <Marker position={[listing.geoLocation.lat,listing.geoLocation.long]} icon={new Icon({iconUrl: markerIconPng, iconSize: [25, 41], iconAnchor: [12, 41]})} >
+      <Popup>
+        A pretty CSS3 popup. <br /> Easily customizable.
+      </Popup>
+    </Marker>
+  </MapContainer>
+
+        </div>
       </div>
     </main>
   );

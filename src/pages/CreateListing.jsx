@@ -2,7 +2,6 @@ import React from 'react'
 import { useState } from 'react'; 
 import {toast} from 'react-toastify'
 import Spinner from '../components/Spinner';
-import { MapContainer, Marker, Popup, TileLayer } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import { serverTimestamp } from 'firebase/firestore';
 import { getAuth } from 'firebase/auth';
