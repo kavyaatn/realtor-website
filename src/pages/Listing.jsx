@@ -125,7 +125,7 @@ export default function Listing() {
     />
       <Marker position={[listing.geoLocation.lat,listing.geoLocation.long]} icon={new Icon({iconUrl: markerIconPng, iconSize: [25, 41], iconAnchor: [12, 41]})} >
       <Popup>
-        A pretty CSS3 popup. <br /> Easily customizable.
+        {listing.address}
       </Popup>
     </Marker>
   </MapContainer>
